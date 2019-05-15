@@ -34,37 +34,27 @@ class MainEventHandler {
     }
 
     // get LogData class's instance
+    // need to test frame (how to make test data from kafka?)
     fun pollingTopics() {
         val consumer = createConsumer()
         // if there is only topic in list, only get log information.
         consumer.subscribe(configManager?.accessTopicList)
-        while(true) {
+        while(true) { // per 1 second, while routine is running
             val records = consumer.poll(Duration.ofSeconds(1))
             records.iterator().forEach {
                 val logsString = it.value()
                 val logMessage = jsonMapper.readValue(logsString, LogData::class.java)
-                println(logMessage.managerName + ", " + logMessage.managerEmail + ", "
-                 + logMessage.logType + ", " + logMessage.logMessage)
                 divideLogMessage(logMessage)
             }
         }
     }
 
-    private fun divideLogMessage(logMessage: LogData?) {
-        when (logMessage?.logType) {
-            "ErrorLogType" -> LogQueue.queueOfErrors.add(logMessage.logMessage)
-            "WarningLogType" -> LogQueue.queueOfWarnings.add(logMessage.logMessage)
-            "logMessage" -> LogQueue.queueOfNormals.add(logMessage.logMessage)
+    private fun divideLogMessage(logdata: LogData?) {
+        when (logdata?.logType) {
+            "ErrorLogType" -> LogQueue.queueOfErrors.add(logdata)
+            "WarningLogType" -> LogQueue.queueOfWarnings.add(logdata)
+            "logMessage" -> LogQueue.queueOfNormals.add(logdata)
         }
     }
-
-    // polling routine is coroutine or thread ( + Filtering)
-//    fun polling {
-//        runBlocking {
-//            val job = launch{
-//                println("${Thread.currentThread()} has run")
-//            }
-//        }
-//    }
 }
 

@@ -15,6 +15,8 @@ class ConfigManager(configName: String) {
     var accessTopicList: List<String>? = null
     var errorLimitCount: Int? = 0
     var warnLimitCount: Int? = 0
+    var errorCsvFileName: String? = ""
+    var warnCsvFileName: String? = ""
 
     private fun readJson() : String {
         val bufferedReader: BufferedReader = File(configJsonPath).bufferedReader()

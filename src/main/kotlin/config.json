@@ -6,5 +6,7 @@
       "person", "log", "Shin"
   ],
   "errorLimitCount": 100,
-  "warnLimitCount": 150
+  "warnLimitCount": 150,
+  "errorCsvFileName": "Error_CSV.csv",
+  "warnCsvFileName" : "Warn_CSV.csv"
 }
